@@ -1,0 +1,16 @@
+set -e
+
+random_commit () {
+    git log --oneline --all | shuf -n 1 | awk '{print $1}'
+}
+
+A=$(random_commit)
+B=$(random_commit)
+
+git checkout "$A"
+
+# Invent a new branch name
+new=b$(git branch --list 'b*' | wc -l)
+
+git checkout -b "$new"
+git merge --no-edit --no-ff "$B"
